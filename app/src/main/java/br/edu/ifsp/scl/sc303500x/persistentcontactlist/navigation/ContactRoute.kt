@@ -1,0 +1,28 @@
+package br.edu.ifsp.scl.sc303500x.persistentcontactlist.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.edu.ifsp.scl.sc303500x.persistentcontactlist.ContactViewModel
+import br.edu.ifsp.scl.sc303500x.persistentcontactlist.ui.composable.screen.ContactScreen
+
+@Composable
+fun ContactRoute(
+    contactViewModel: ContactViewModel,
+    modifier: Modifier = Modifier,
+    onDone: () -> Unit
+) {
+    val contact by contactViewModel.currentContact.collectAsStateWithLifecycle()
+    val operation by contactViewModel.operation.collectAsStateWithLifecycle()
+
+    ContactScreen(
+        contact = contact,
+        operation = operation,
+        modifier = modifier,
+        onSaveAndQuit = { newOrEditedContact ->
+            contactViewModel.saveContact(newOrEditedContact)
+            onDone()
+        }
+    )
+}
